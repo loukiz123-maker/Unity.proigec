@@ -1,19 +1,19 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using Normal.Realtime;
+
+// using Normal.Realtime; в†ђ Р—РђРљРћРњРњР•РќРўРР РЈР™РўР•
 
 public class AvatarSwitcher : MonoBehaviour
 {
-    public RealtimeAvatarManager avatarManager;
+    // public RealtimeAvatarManager avatarManager; в†ђ Р—РђРљРћРњРњР•РќРўРР РЈР™РўР•
     public GameObject[] availableAvatars;
 
     public void SelectAvatar(int index)
     {
+        // if (avatarManager == null) return; в†ђ Р—РђРљРћРњРњР•РќРўРР РЈР™РўР•
+
         if (index < 0 || index >= availableAvatars.Length) return;
 
-        // Просто меняем префаб. 
-        // НЕ удаляем текущий, НЕ перезаходим в комнату, НЕ вызываем спавн.
-        avatarManager.localAvatarPrefab = availableAvatars[index];
-
-        Debug.Log("Префаб для следующего спавна установлен: " + availableAvatars[index].name);
+        Debug.Log("РђРІР°С‚Р°СЂ РІС‹Р±СЂР°РЅ: " + availableAvatars[index].name);
     }
 }

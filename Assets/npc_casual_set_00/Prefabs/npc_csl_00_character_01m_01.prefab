@@ -3507,7 +3507,7 @@ Transform:
   m_GameObject: {fileID: 1622800883521802920}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0034994655, y: -0.03708944, z: 0.09386932, w: 0.9948873}
-  m_LocalPosition: {x: 0.099, y: -0.012, z: 0.018}
+  m_LocalPosition: {x: 0.09308651, y: -0.013081985, z: 0.017438991}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4772,7 +4772,7 @@ LODGroup:
   m_Enabled: 1
 --- !u!95 &4700641943394876169
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4786,7 +4786,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

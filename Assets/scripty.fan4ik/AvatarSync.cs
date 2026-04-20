@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using Normal.Realtime;
 
 public class AvatarSync : MonoBehaviour
@@ -11,7 +11,6 @@ public class AvatarSync : MonoBehaviour
     {
         _realtimeView = GetComponent<RealtimeView>();
 
-        // Попытка найти камеру, если мы владелец
         if (_realtimeView != null && _realtimeView.isOwnedLocallyInHierarchy)
         {
             if (Camera.main != null)
@@ -21,10 +20,8 @@ public class AvatarSync : MonoBehaviour
 
     void Update()
     {
-        // 1. Проверяем, существует ли RealtimeView и инициализирован ли он (есть ли модель)
         if (_realtimeView == null || _realtimeView.isOwnedLocallyInHierarchy == false) return;
 
-        // 2. Только если мы владельцы этого аватара, обновляем поворот головы
         if (_realtimeView.isOwnedLocallyInHierarchy && _mainCamera != null && headTransform != null)
         {
             headTransform.rotation = _mainCamera.rotation;
