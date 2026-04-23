@@ -11,17 +11,26 @@ public class DroneLogic : MonoBehaviour
     [Header("Настройки зрения")]
     public Light droneLight;
     public float viewDistance = 10f;
+    public float beamWidth = 1.5f; // Ширина луча (как у прожектора)
     public Color normalColor = Color.white;
     public Color alertColor = Color.red;
 
     [Header("Связь с эффектами")]
     public GlitchOverlay glitchScript;
 
-    private bool iSeePlayer = false; // Состояние: видит ли ЭТОТ дрон игрока прямо сейчас
+    private bool iSeePlayer = false;
 
     void Update()
     {
-        // 1. Движение между точками
+        // 1. Движение
+        MoveDrone();
+
+        // 2. Логика зрения (используем SphereCast для объема)
+        ScanForPlayer();
+    }
+
+    void MoveDrone()
+    {
         Transform target = movingToB ? pointB : pointA;
         transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
 
@@ -30,41 +39,48 @@ public class DroneLogic : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target.position) < 0.2f)
             movingToB = !movingToB;
+    }
 
-        // 2. Логика зрения (Raycast)
+    void ScanForPlayer()
+    {
         RaycastHit hit;
-        if (Physics.Raycast(droneLight.transform.position, droneLight.transform.forward, out hit, viewDistance))
+        // SphereCast пускает "шар" по направлению света, что имитирует широкий луч
+        if (Physics.SphereCast(droneLight.transform.position, beamWidth, droneLight.transform.forward, out hit, viewDistance))
         {
             if (hit.collider.CompareTag("Player"))
             {
-                // Если мы только что заметили игрока (раньше не видели)
                 if (!iSeePlayer)
                 {
-                    iSeePlayer = true;
-                    droneLight.color = alertColor;
-                    if (glitchScript != null) glitchScript.SetGlitch(true);
-                    Debug.Log("Дрон " + gameObject.name + " заметил игрока!");
+                    DetectedPlayer();
                 }
             }
             else
             {
-                // Если луч попал во что-то другое, но мы до этого видели игрока
                 if (iSeePlayer) LostPlayer();
             }
         }
         else
         {
-            // Если луч улетел в пустоту, но мы до этого видели игрока
             if (iSeePlayer) LostPlayer();
         }
+
+        // РИСУЕМ ЛУЧ в окне Scene для отладки
+        Debug.DrawRay(droneLight.transform.position, droneLight.transform.forward * viewDistance, iSeePlayer ? Color.red : Color.green);
     }
 
-    // Метод для сброса состояния
+    void DetectedPlayer()
+    {
+        iSeePlayer = true;
+        droneLight.color = alertColor;
+        if (glitchScript != null) glitchScript.SetGlitch(true);
+        Debug.Log("<color=red>ВНИМАНИЕ:</color> Игрок в зоне луча!");
+    }
+
     void LostPlayer()
     {
         iSeePlayer = false;
         droneLight.color = normalColor;
         if (glitchScript != null) glitchScript.SetGlitch(false);
-        Debug.Log("Дрон " + gameObject.name + " потерял игрока.");
+        Debug.Log("<color=green>БЕЗОПАСНО:</color> Игрок скрылся.");
     }
 }
